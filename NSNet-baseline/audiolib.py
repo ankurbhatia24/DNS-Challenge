@@ -14,7 +14,7 @@ import librosa
 SIGMA_EPS = 1e-12
 
 
-def stft(frame, _sr, wind, _hop, nfft, synth=False, zphase=False):
+def stft(frame, _sr, wind, _hop, nfft, synth=False, zphase=False):  #short time fourier transform
     if not zphase:
         return np.fft.rfft(frame, n=nfft)
     fsize = len(wind)
@@ -23,7 +23,7 @@ def stft(frame, _sr, wind, _hop, nfft, synth=False, zphase=False):
     return np.fft.rfft(np.concatenate((frame[woff:], zp, frame[:woff])))
 
 
-def istft(frame, _sr, wind, nfft, zphase=False):
+def istft(frame, _sr, wind, nfft, zphase=False):  #inverse short time fourier transform
     frame = np.fft.irfft(frame, nfft)
     if zphase:
         fsize = len(wind)
@@ -31,9 +31,9 @@ def istft(frame, _sr, wind, nfft, zphase=False):
     return frame
 
 
-def onlineMVN_perframe(
+def onlineMVN_perframe(                             
         frame_feature, frame_counter, mu, sigmasquare,
-        frameshift=0.01, tauFeat=3., tauFeatInit=0.1, t_init=0.1):
+        frameshift=0.01, tauFeat=3., tauFeatInit=0.1, t_init=0.1):    #Online mean and variance normalization (per frequency)
     """Online mean and variance normalization (per frequency)"""
 
     n_init_frames = math.ceil(t_init / frameshift)
